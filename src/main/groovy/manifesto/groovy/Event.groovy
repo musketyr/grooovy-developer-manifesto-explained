@@ -1,6 +1,6 @@
 package manifesto.groovy
 
-interface Event {
+interface Event extends Iterable<Session> {
 
     void addSession(Session session)
     Iterable<Session> getSessions()

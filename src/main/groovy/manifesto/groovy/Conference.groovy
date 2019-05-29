@@ -3,11 +3,22 @@ package manifesto.groovy
 import groovy.transform.CompileStatic
 
 @CompileStatic
-enum Conference implements Event {
+class Conference implements Event {
 
-    INSTANCE
+    private static final Map<String, Conference> CONFERENCES = [:]
 
+    static Conference create(String name) {
+        CONFERENCES.computeIfAbsent(name) {
+            new Conference(name)
+        }
+    }
+
+    private final String  name;
     private final List<Session> sessions = []
+
+    Conference(String name) {
+        this.name = name
+    }
 
     @Override
     void addSession(Session session) {
@@ -17,6 +28,11 @@ enum Conference implements Event {
     @Override
     Iterable<Session> getSessions() {
         return sessions.asImmutable()
+    }
+
+    @Override
+    Iterator<Session> iterator() {
+        return sessions.iterator()
     }
 
 }
